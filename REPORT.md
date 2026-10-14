@@ -1,4 +1,4 @@
-# Release readiness report: style-xlsx-m 0.1.32
+# Release readiness report: style-xlsx-m 0.1.33
 
 Completed on 2026-10-14 (Asia/Dushanbe), on branch `chore/release-ready`. Nothing was pushed or published. No registry-changing command was run.
 
@@ -49,9 +49,9 @@ The exact in-memory cell styles are recorded in `test/fixtures/read-styles.json`
 - Fixed the fork’s border-colour handling, which overwrote RGB colours with an undefined index. Theme references and tint are now retained. Indexed RGB values are padded to six hex digits; the old conversion produced `ff00` for indexed red and made openpyxl reject the saved workbook. The regression test asserts RGB colours, theme/tint, valid output, and the RGB conversion.
 - The original minimal border assertion failed with `undefined` instead of `123456`; the original independently saved workbook failed openpyxl validation with “Colors must be aRGB hex values”. The fixed fixture opens and passes.
 - No upstream writer behaviour was changed. Theme-index-0 fill loss and indexed-border conversion are explicitly documented and asserted as limitations.
-- Documented existing `sheet_to_json` edge cases: non-empty sheets require an options object; missing options throw. Empty sheets return `[]` even with `getCellStyles: true`. Tests confirm both; no public behaviour was changed.
+- Restored optional `sheet_to_json` options with a one-line fix: check the normalized `o.getCellStyles` instead of dereferencing raw `opts`. `test/sheet-to-json.test.js` first reproduced the TypeError, then verified omitted/undefined/null/empty options, ordinary values, both object and array style results, and style object identity. The empty-sheet `[]` behaviour is unchanged and remains documented; the missing-options limitation was removed.
 - Documented partial preservation, unverified underline variants/gradients/conditional formatting/diagonal border reading/custom themes, raw page-setup tags and string-valued setup objects. The tests confirm only the supplied fixture, not arbitrary workbooks or visual rendering in Excel.
-- Documented entry-point differences: Node CommonJS is the tested style reader, `module` remains a separate xlsx-js-style bundle, CDN entries remain upstream SheetJS. Async writes still use the inherited writer. Existing entry paths are kept and smoke-tested.
+- Unified package-root entry resolution: `main` remains `xlsx.js` and `module` now points to `./xlsx.js`. The existing `browser` map still disables Node-only modules; no `exports` restriction was added, preserving existing deep imports. Default webpack browser and Node targets import and execute the same reader from the packed tarball. CDN entries remain separate upstream SheetJS builds. Full Vite and Next.js applications are not claimed as tested.
 - Optional TypeScript tightening was skipped: `s` is inherited as `any`, worksheet metadata uses a broad indexer, and `sheet_to_json` lacks the object-return overload. Narrowing these safely across inherited formats needs a separate compatibility review. No `tsc` result is claimed. README states this limitation.
 
 ## 3. README examples
@@ -95,7 +95,7 @@ Each modified source found in the upstream comparison now carries a “Modified 
 | `dist/xlsx.extendscript.js` | Pre-existing local build differences; not shipped. |
 | `xlsx-js-style/dist/shim.min.js` | Pre-existing reformatted shim; not shipped. |
 | `xlsx-js-style/dist/xlsx.min.js` | Pre-existing printing/style collection extensions and formatting; shipped writer. |
-| `xlsx-js-style/dist/xlsx.bundle.js` | Pre-existing printing/style collection extensions and formatting; shipped module entry. |
+| `xlsx-js-style/dist/xlsx.bundle.js` | Pre-existing printing/style collection extensions and formatting; retained as a legacy deep import, no longer the module entry. |
 | `xlsx-js-style/types/index.d.ts` | Pre-existing getCellStyles option; not shipped. |
 | `types/index.d.ts` | Pre-existing getCellStyles option and worksheet naming declaration; shipped types. |
 
@@ -103,7 +103,7 @@ Other root dist files and source maps were byte-identical to upstream. Attributi
 
 Existing codepage, adler-32 and commander license files remain in the repository. Exact copies are shipped in `third-party-licenses/` so pruning nested vendor files from the tarball does not prune their notices. The seven external runtime dependencies (`adler-32`, `cfb`, `codepage`, `crc-32`, `ssf`, `wmf`, `word`) all have LICENSE files in the fresh installation.
 
-Package metadata: `license` is `Apache-2.0`; author is `Shahrom Shukurov` (personal email removed); description states the fork and its purpose; keywords include xlsx, excel, styles, export, sheetjs and page-setup. Repository, homepage and bugs retain the existing MOR8T/STYLE-XSLX-M URLs. Git’s origin/default branch is `main`, and README uses absolute repository URLs for LICENSE/NOTICE. The security note, credits, and non-endorsement statement remain.
+Package metadata: `license` is `Apache-2.0`; author is `Shahrom Shukurov` (personal email removed); description states the fork and its purpose; keywords include xlsx, excel, styles, export, sheetjs and page-setup. Repository, homepage, bugs and README LICENSE/NOTICE links now use the owner-provided `https://github.com/MOR8T/style-xlsx-m` destination. The links retain the existing `main` branch path. The local Git remote was not changed. The security note, credits, and non-endorsement statement remain.
 
 ## 5. Company and sensitive content
 
@@ -120,18 +120,18 @@ Scanned all working-tree files (including legacy vendor code and source maps), t
 
 Ran `npm pkg fix`; removed the CLI `bin` entry because CLI support is outside this release’s documented use. Added an explicit files whitelist for licenses, README, main/module/CDN/type entries, required codepage runtime files, and vendor license copies. No nested node_modules, test files, fixtures, logs, source maps or REPORT.md are shipped. The runtime requires no files from the legacy nested node_modules tree; it uses the bundled codepage files. Legacy files are retained locally with their licenses.
 
-| Metric | Before (0.1.31) | After (0.1.32) |
+| Metric | Before (0.1.31) | After (0.1.33) |
 | :-- | --: | --: |
 | File count (`npm pack --dry-run`) | 212 | 16 |
-| Unpacked size, bytes | 17574056 | 4356995 |
-| Packed size, bytes | 5195767 | 1261189 |
+| Unpacked size, bytes | 17574056 | 4357191 |
+| Packed size, bytes | 5195767 | 1261266 |
 | Nested node_modules files | 178 | 0 |
 
 Unpacked size reduced by 75.2%. Final main, module, unpkg, jsdelivr and types entry paths exist; JavaScript entries load successfully from the installed tarball. `npm test` passed after cleanup and after the patch bump. `git diff --check` passed. Version was bumped using `npm version patch --no-git-tag-version` and committed; no tag or push was created.
 
 ## 7. Open TODOs requiring owner input
 
-- Confirm the existing repository URL is the intended public portfolio destination. No URL was invented. LICENSE/NOTICE links point at origin’s existing `main` branch; local changes remain on `chore/release-ready` until you publish the Git changes yourself.
+- Complete the planned GitHub repository rename and publish the Git changes when ready. The owner supplied the new repository URL, so no URL clarification is pending. LICENSE/NOTICE links use that new destination and the existing `main` branch.
 - Confirm authorization to release changes originally created during employment. The source/content/license checks do not establish that authorization.
 - Decide the supported Node.js range before claiming older runtime support. The inherited `>=0.8` metadata predates the fork’s modern syntax; the completed tests establish Node.js 22.19.0 only.
 - TypeScript style/page-setup/object-return typing remains a documented optional follow-up.
@@ -147,3 +147,19 @@ npm publish --otp=<code>
 ```
 
 Replace `<code>` with your current npm one-time code. REPORT.md is excluded from the package whitelist.
+
+## 9. Follow-up release 0.1.33
+
+Continued on `chore/release-ready`; nothing was published or pushed.
+
+- Fixed optional `sheet_to_json` options and added `test/sheet-to-json.test.js`. Existing `{ out, styles }` results, sparse-row conventions and the empty-sheet result remain unchanged. The round-trip test now checks that omitted options match `{}` instead of expecting a crash.
+- Changed only `module` to `./xlsx.js`; `main` already used that file. `browser` remains the existing Node-module exclusions; `exports` was absent and remains absent. This avoids introducing a new restriction on deep imports. The legacy bundle stays in the tarball for existing deep-import users.
+- Webpack’s default browser resolution considers browser/module/main, so the old module entry could select the separate writer bundle. Both entry fields now lead to the style reader. See the [webpack resolution documentation](https://webpack.js.org/configuration/resolve/#resolvemainfields). No aliases, custom mainFields, or added Node polyfills were used in the test project.
+- Added a minimal generated webpack project in `test/bundler.test.js`, using pinned webpack 5.111.1 as a test dependency. It imports the installed tarball using `import XLSX from 'style-xlsx-m'`, builds production bundles for both `web` and `node`, and asserts that the compiled modules include `xlsx.js` rather than the legacy module bundle.
+- Executed the web bundle in an isolated JavaScript context with no Node `require`, `Buffer`, or `process`, supplying synthetic workbook bytes to `read`. Executed the Node bundle using the `readFile` example. Both expose the exact expected A1 style snapshot, edit the value, and write files that openpyxl independently confirms retain the RGB fill, border colour, bold font and landscape page setup. This checks workbook processing; browser UI/file downloads and full Vite/Next.js applications were not tested.
+- README now explains shared entry points and browser byte input, retains the separate CDN caveat, and no longer says style reading is Node-only. The permitted Node-only fallback was unnecessary because the small entry change passed.
+- Updated all package repository/homepage/bugs URLs and README LICENSE/NOTICE URLs to the renamed repository. No upstream project links or copyright/license text were altered.
+- Re-ran the optional-options regression, all independent round-trip comparisons, all five packed README examples, webpack browser/Node imports, and runtime/type entry checks from a freshly installed `style-xlsx-m-0.1.33.tgz`; all passed. Tests are orchestrated by `npm test`.
+- Bumped with `npm version patch --no-git-tag-version`. The version and this report are committed after verification. REPORT.md, tests, fixtures, source maps and nested node_modules remain excluded from the release package.
+
+Final dry-run package: 16 files, 4357191 unpacked bytes, 1261266 packed bytes. `git diff --check` passed. The Step 1 results table remains valid for 0.1.33.
