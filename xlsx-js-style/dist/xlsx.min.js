@@ -14458,7 +14458,8 @@ function make_xlsx_lib(a) {
               var o = $t("v", kt(n)),
                 c = { r: t },
                 l = el(a.cellXfs, e, a);
-              if ("z" === e.t && !e.f) o = "";
+              if (("z" === e.t && !e.f) || (null == e.v && "string" != typeof e.f))
+                o = "";
               switch ((0 !== l && (c.s = l), e.t)) {
                 case "n":
                   break;
@@ -26278,7 +26279,15 @@ function make_xlsx_lib(a) {
         });
       return (
         (a.prototype.escapeAttributeValue = function (e) {
-          return '"' + e.replace(/\"/g, "&quot;") + '"';
+          return (
+            '"' +
+            e
+              .replace(/&(?!(?:amp|lt|gt|quot|apos|#[0-9]+|#x[0-9a-fA-F]+);)/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/\"/g, "&quot;") +
+            '"'
+          );
         }),
         (a.prototype.toXml = function (e) {
           // in this function make style tag
