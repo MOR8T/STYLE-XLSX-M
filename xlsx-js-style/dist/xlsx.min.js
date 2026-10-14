@@ -1,4 +1,5 @@
 /* xlsx-js-style 1.2.0-beta @ 2022-04-05T01:40:40.843Z */
+/* Modified by Shahrom Shukurov: page setup and sheet_to_json style collection in the bundled writer; local formatting. See NOTICE. */
 var XLSX = {};
 function make_xlsx_lib(a) {
   (a.version = "0.18.5"), (a.style_version = "1.2.0");

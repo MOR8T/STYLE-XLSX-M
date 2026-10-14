@@ -1,4 +1,5 @@
 /*! xlsx.js (C) 2013-present SheetJS -- http://sheetjs.com */
+/* Modified by Shahrom Shukurov: local diagnostic logging in the inherited module build. See NOTICE. */
 /* vim: set ts=2: */
 /*exported XLSX */
 /*global process:false, Buffer:false, ArrayBuffer:false, DataView:false, Deno:false */

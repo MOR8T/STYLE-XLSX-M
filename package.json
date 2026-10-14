@@ -1,110 +1,117 @@
 {
-	"name": "style-xlsx-m",
-	"version": "0.1.31",
-	"author": "Shukurov Shahrom <hp.sh.shahrom@gmail.com> (https://github.com/MOR8T)",
-	"description": "Fork of SheetJS (xlsx 0.18.5) and xlsx-js-style: read .xlsx files with cell styles, write styled cells, and set page setup for printing.",
-	"keywords": [
-		"excel",
-		"xls",
-		"xlsx",
-		"xlsm",
-		"xlsb",
-		"ods",
-		"csv",
-		"dbf",
-		"dif",
-		"sylk",
-		"office",
-		"spreadsheet",
-		"style",
-		"print",
-		"format",
-		"workbook",
-		"worksheet",
-		"styles",
-		"export",
-		"sheetjs",
-		"xlsx-js-style"
-	],
-	"bin": {
-		"xlsx": "./bin/xlsx.njs"
-	},
-	"main": "xlsx.js",
-	"module": "./xlsx-js-style/dist/xlsx.bundle.js",
-	"unpkg": "dist/xlsx.full.min.js",
-	"jsdelivr": "dist/xlsx.full.min.js",
-	"types": "types/index.d.ts",
-	"browser": {
-		"buffer": false,
-		"crypto": false,
-		"stream": false,
-		"process": false,
-		"fs": false
-	},
-	"sideEffects": false,
-	"dependencies": {
-		"adler-32": "~1.3.0",
-		"cfb": "~1.2.1",
-		"codepage": "~1.15.0",
-		"crc-32": "~1.2.1",
-		"ssf": "~0.11.2",
-		"wmf": "~1.0.1",
-		"word": "~0.3.0"
-	},
-	"devDependencies": {
-		"@sheetjs/uglify-js": "~2.7.3",
-		"@types/node": "^8.5.9",
-		"acorn": "7.4.1",
-		"alex": "8.1.1",
-		"blanket": "~1.2.3",
-		"commander": "~2.17.1",
-		"dtslint": "^0.1.2",
-		"eslint": "7.23.0",
-		"eslint-plugin-html": "^6.1.2",
-		"eslint-plugin-json": "^2.1.2",
-		"exit-on-epipe": "~1.0.1",
-		"fflate": "^0.7.1",
-		"jsdom": "~11.1.0",
-		"markdown-spellcheck": "^1.3.1",
-		"mocha": "~2.5.3",
-		"sinon": "^1.17.7",
-		"typescript": "2.2.0"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/MOR8T/STYLE-XSLX-M.git"
-	},
-	"scripts": {
-		"pretest": "npm run lint",
-		"test": "npm run tests-only",
-		"pretest-only": "git submodule init && git submodule update",
-		"tests-only": "make travis",
-		"build": "make",
-		"lint": "make fullint",
-		"dtslint": "dtslint types"
-	},
-	"config": {
-		"blanket": {
-			"pattern": "xlsx.js"
-		}
-	},
-	"alex": {
-		"allow": [
-			"chinese",
-			"special",
-			"simple",
-			"just",
-			"crash",
-			"wtf",
-			"holes"
-		]
-	},
-	"homepage": "https://github.com/MOR8T/STYLE-XSLX-M#readme",
-	"bugs": {
-		"url": "https://github.com/MOR8T/STYLE-XSLX-M/issues"
-	},
-	"license": "Apache-2.0",
-	"engines": {
-		"node": ">=0.8"
-	}
+  "name": "style-xlsx-m",
+  "version": "0.1.32",
+  "author": "Shahrom Shukurov",
+  "description": "Fork of SheetJS (xlsx 0.18.5) and xlsx-js-style: read .xlsx files with cell styles, write styled cells, and set page setup for printing.",
+  "keywords": [
+    "excel",
+    "xls",
+    "xlsx",
+    "xlsm",
+    "xlsb",
+    "ods",
+    "csv",
+    "dbf",
+    "dif",
+    "sylk",
+    "office",
+    "spreadsheet",
+    "style",
+    "print",
+    "format",
+    "workbook",
+    "worksheet",
+    "styles",
+    "export",
+    "sheetjs",
+    "xlsx-js-style",
+    "page-setup"
+  ],
+  "main": "xlsx.js",
+  "module": "./xlsx-js-style/dist/xlsx.bundle.js",
+  "unpkg": "dist/xlsx.full.min.js",
+  "jsdelivr": "dist/xlsx.full.min.js",
+  "types": "types/index.d.ts",
+  "browser": {
+    "buffer": false,
+    "crypto": false,
+    "stream": false,
+    "process": false,
+    "fs": false
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "adler-32": "~1.3.0",
+    "cfb": "~1.2.1",
+    "codepage": "~1.15.0",
+    "crc-32": "~1.2.1",
+    "ssf": "~0.11.2",
+    "wmf": "~1.0.1",
+    "word": "~0.3.0"
+  },
+  "devDependencies": {
+    "@sheetjs/uglify-js": "~2.7.3",
+    "@types/node": "^8.5.9",
+    "acorn": "7.4.1",
+    "alex": "8.1.1",
+    "blanket": "~1.2.3",
+    "commander": "~2.17.1",
+    "dtslint": "^0.1.2",
+    "eslint": "7.23.0",
+    "eslint-plugin-html": "^6.1.2",
+    "eslint-plugin-json": "^2.1.2",
+    "exit-on-epipe": "~1.0.1",
+    "fflate": "^0.7.1",
+    "jsdom": "~11.1.0",
+    "markdown-spellcheck": "^1.3.1",
+    "mocha": "~2.5.3",
+    "sinon": "^1.17.7",
+    "typescript": "2.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MOR8T/STYLE-XSLX-M.git"
+  },
+  "scripts": {
+    "test": "node test/run.js"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "xlsx.js"
+    }
+  },
+  "alex": {
+    "allow": [
+      "chinese",
+      "special",
+      "simple",
+      "just",
+      "crash",
+      "wtf",
+      "holes"
+    ]
+  },
+  "homepage": "https://github.com/MOR8T/STYLE-XSLX-M#readme",
+  "bugs": {
+    "url": "https://github.com/MOR8T/STYLE-XSLX-M/issues"
+  },
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "files": [
+    "LICENSE",
+    "NOTICE",
+    "README.md",
+    "xlsx.js",
+    "types/index.d.ts",
+    "dist/LICENSE",
+    "dist/cpexcel.js",
+    "dist/xlsx.full.min.js",
+    "xlsx-js-style/dist/LICENSE",
+    "xlsx-js-style/dist/xlsx.min.js",
+    "xlsx-js-style/dist/xlsx.bundle.js",
+    "xlsx-js-style/dist/cpexcel.js",
+    "third-party-licenses/"
+  ]
 }
