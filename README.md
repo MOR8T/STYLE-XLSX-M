@@ -1,6 +1,6 @@
 # style-xlsx-m
 
-Read and write `.xlsx` files in Node.js with selected cell styles, and set page setup for printing.
+Read and write `.xlsx` files with selected cell styles in Node.js or bundled browser code, and set page setup for printing.
 
 Based on [SheetJS Community Edition](https://github.com/SheetJS/sheetjs) (`xlsx` 0.18.5) and [xlsx-js-style](https://github.com/gitbrent/xlsx-js-style).
 
@@ -74,6 +74,8 @@ Note: `styles[r]` lists the cells that `sheet_to_json` visits in that row, in or
 
 Reading styles works for `.xlsx` only, not `.xls`.
 
+The `main` and `module` entries use the same style-reading build. In bundled browser code, use `import XLSX from 'style-xlsx-m'` and `XLSX.read(bytes, { type: 'array', cellStyles: true })` with a `Uint8Array` or `ArrayBuffer`. `readFile` requires the Node.js filesystem. Importing, editing and saving a styled template is tested with webpack for browser and Node.js targets.
+
 ## Cell styles reference
 
 A cell is `{ v: value, t: type, s: style }`. The example below writes `alignment`, `border`, `fill` and `font`. Set the cell's `z` property for a number format.
@@ -140,13 +142,13 @@ When a file is **read**, `ws['!pageSetup']` is the raw `<pageSetup .../>` XML ta
 - Based on SheetJS 0.18.5 (see the security note above). Do not parse untrusted files.
 - Cell styles are read from `.xlsx` only, not `.xls`.
 - Reading is a partial round trip. A theme-4 solid fill with tint is preserved, but a theme-index-0 fill loses its colour. Its `s.fill.fgColor` contains `{ theme: 0 }`; the bundled upstream writer drops that colour.
-- On non-empty sheets, `sheet_to_json` requires an options object: use `sheet_to_json(ws, {})` for the usual value-only result. Omitting options throws in the existing implementation. An empty sheet returns `[]` even when `getCellStyles: true` is requested.
+- An empty sheet returns `[]` even when `getCellStyles: true` is requested.
 - Indexed border colours are exposed and saved as RGB. The tested indexed red keeps its RGB colour, but loses the indexed palette reference. Theme border colours keep their theme and tint. Custom theme palettes have not been tested.
 - Single underline is confirmed. Other underline variants, gradient fills, conditional formatting, and diagonal border reading are not verified. Do not assume they are preserved.
 - Number formats are preserved in the tested numeric and date cells, but are not part of `s`; use `cellNF: true` to expose them in `cell.z`. Merges, column widths and row heights are worksheet metadata (`!merges`, `!cols`, `!rows`), not cell styles.
 - `!pageSetup` is returned as a raw XML string on read. The original A4/landscape/scale tag is preserved on save. To change it, assign the object shown above with string values. Numeric object values and other print settings are not verified.
 - The TypeScript definitions are inherited from SheetJS with a `getCellStyles` option added. `s` and `!pageSetup` are not fully typed, and the `sheet_to_json` return types do not describe `{ out, styles }`.
-- The examples and style-reading guarantees apply to the Node.js CommonJS entry (`require('style-xlsx-m')`). The existing `module` entry is a separate xlsx-js-style bundle, and the CDN entry is an upstream SheetJS build; they do not provide the same style-reading guarantees.
+- The `main` and `module` entries share the tested style reader. The separate CDN entries (`unpkg` and `jsdelivr`) remain upstream SheetJS builds and do not provide the same style-reading guarantees. Full Vite and Next.js applications have not been tested.
 - Only these synchronous write functions are delegated to xlsx-js-style: `write`, `writeFile`, `writeFileSync`, `writeXLSX`, `writeFileXLSX`. `writeFileAsync` uses the inherited SheetJS writer and is outside these style guarantees.
 
 ## Credits & License
@@ -159,4 +161,4 @@ Changes in this fork (by Shahrom Shukurov):
 - Page setup for printing (paper size, orientation, scale)
 
 This project is not affiliated with or endorsed by SheetJS LLC.
-Licensed under the Apache License 2.0. See [LICENSE](https://github.com/MOR8T/STYLE-XSLX-M/blob/main/LICENSE) and [NOTICE](https://github.com/MOR8T/STYLE-XSLX-M/blob/main/NOTICE).
+Licensed under the Apache License 2.0. See [LICENSE](https://github.com/MOR8T/style-xlsx-m/blob/main/LICENSE) and [NOTICE](https://github.com/MOR8T/style-xlsx-m/blob/main/NOTICE).
