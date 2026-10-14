@@ -80,7 +80,9 @@
         "theme": 1,
         "rgb": "000000"
       },
-      "name": "Calibri"
+      "name": "Calibri",
+      "family": 2,
+      "scheme": "minor"
     },
     "border": {}
   },
@@ -105,7 +107,9 @@
         "theme": 1,
         "rgb": "000000"
       },
-      "name": "Calibri"
+      "name": "Calibri",
+      "family": 2,
+      "scheme": "minor"
     },
     "border": {}
   },
@@ -125,7 +129,9 @@
         "theme": 1,
         "rgb": "000000"
       },
-      "name": "Calibri"
+      "name": "Calibri",
+      "family": 2,
+      "scheme": "minor"
     },
     "border": {}
   },
@@ -145,7 +151,9 @@
         "theme": 1,
         "rgb": "000000"
       },
-      "name": "Calibri"
+      "name": "Calibri",
+      "family": 2,
+      "scheme": "minor"
     },
     "border": {}
   },
@@ -165,7 +173,9 @@
         "theme": 1,
         "rgb": "000000"
       },
-      "name": "Calibri"
+      "name": "Calibri",
+      "family": 2,
+      "scheme": "minor"
     },
     "border": {}
   }

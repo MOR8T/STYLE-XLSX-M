@@ -22,7 +22,7 @@ for (const entry of ['main', 'module', 'unpkg', 'jsdelivr']) {
 }
 assert(fs.existsSync(path.resolve(packagePath, metadata.types)), 'Types entry is missing');
 const env = {...process.env, XLSX_PACKAGE: packagePath, PACKAGE_TEST_DIR: directory};
-for (const test of ['sheet-to-json.test.js', 'roundtrip.test.js', 'readme-examples.test.js', 'bundler.test.js']) {
+for (const test of ['strict-mode.test.js', 'browser-styles.test.js', 'sheet-to-json.test.js', 'roundtrip.test.js', 'readme-examples.test.js', 'bundler.test.js']) {
   execFileSync(process.execPath, [path.join(__dirname, test)], {cwd: root, env, stdio: 'inherit'});
 }
 console.log(`Installed tarball verified: ${pack.filename}; ${pack.entryCount} files; ${pack.unpackedSize} unpacked bytes`);

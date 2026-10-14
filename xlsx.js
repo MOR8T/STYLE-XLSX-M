@@ -14542,15 +14542,11 @@ function safe_format(p, fmtid, fillid, opts, themes, styles, fontid, borderid,cf
         if (p.s.bold) p.s.font = { ...p.s.font, bold: p.s.bold ? true : false, };
         if (p.s.italic) p.s.font = { ...p.s.font, italic: p.s.italic ? true : false, };
         if (p.s.name) p.s.font = { ...p.s.font, name: p.s.name, };
+        if (p.s.family != null) p.s.font = { ...p.s.font, family: p.s.family };
+        if (p.s.scheme != null) p.s.font = { ...p.s.font, scheme: p.s.scheme };
 	}
 	if(borderid != null) p.s.border = styles.Borders[borderid]
 	if(cf != null && cf?.alignment) p.s = {...p.s, alignment:cf.alignment}
-	if(p.s && p.t == 'z'){
-		p.t = 's';
-		// p.z = 'General'
-		p.v = ' '
-		p.w = ' '
-	}
 	// console.log('p style',p)
 }
 
@@ -14590,10 +14586,6 @@ var controlsregex = /(<(?:\w:)?controls[^>]*\/>)|(<(?:\w+:)?controls[^>]*>([\s\S
 var drawingregex = /(<(?:\w:)?drawing[^>]*\/>)|(<(?:\w+:)?drawing[^>]*>([\s\S]*)<\/(?:\w+:)?drawing>)/g;
 var legacyDrawingregex = /(<(?:\w:)?legacyDrawing[^>]*\/>)|(<(?:\w+:)?legacyDrawing[^>]*>([\s\S]*)<\/(?:\w+:)?legacyDrawing>)/g;
 
-
-paperSize="9"
-        scale="91"
-        fitToWidth="0"
 
 /* 18.3 Worksheets */
 function parse_ws_xml(data, opts, idx, rels, wb, themes, styles) {
