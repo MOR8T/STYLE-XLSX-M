@@ -24285,7 +24285,7 @@ function sheet_to_json(sheet, opts) {
 		if((row.isempty === false) || (header === 1 ? o.blankrows !== false : !!o.blankrows)) styles[stylesi++] = row.styles;
 	}
 	out.length = outi;
-	if(opts.getCellStyles){
+	if(o.getCellStyles){
 		return {out, styles:styles}
 	}
 	return out;

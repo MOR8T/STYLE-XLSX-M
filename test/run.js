@@ -12,7 +12,8 @@ function npm(args, cwd) {
 const [pack] = JSON.parse(npm(['pack', '--json', '--pack-destination', directory], root));
 assert(!pack.files.some(file => /(?:node_modules|test\/|\.map$|REPORT\.md)/.test(file.path)), 'Unexpected release files');
 fs.writeFileSync(path.join(directory, 'package.json'), JSON.stringify({name: 'synthetic-package-check', private: true}));
-npm(['install', '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund', path.join(directory, pack.filename)], directory);
+const webpackVersion = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).devDependencies.webpack;
+npm(['install', '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund', `webpack@${webpackVersion}`, path.join(directory, pack.filename)], directory);
 const packagePath = path.join(directory, 'node_modules', 'style-xlsx-m');
 assert(!fs.lstatSync(packagePath).isSymbolicLink(), 'Must install the tarball, not a folder link');
 const metadata = JSON.parse(fs.readFileSync(path.join(packagePath, 'package.json'), 'utf8'));
@@ -21,7 +22,7 @@ for (const entry of ['main', 'module', 'unpkg', 'jsdelivr']) {
 }
 assert(fs.existsSync(path.resolve(packagePath, metadata.types)), 'Types entry is missing');
 const env = {...process.env, XLSX_PACKAGE: packagePath, PACKAGE_TEST_DIR: directory};
-for (const test of ['roundtrip.test.js', 'readme-examples.test.js']) {
+for (const test of ['sheet-to-json.test.js', 'roundtrip.test.js', 'readme-examples.test.js', 'bundler.test.js']) {
   execFileSync(process.execPath, [path.join(__dirname, test)], {cwd: root, env, stdio: 'inherit'});
 }
 console.log(`Installed tarball verified: ${pack.filename}; ${pack.entryCount} files; ${pack.unpackedSize} unpacked bytes`);
