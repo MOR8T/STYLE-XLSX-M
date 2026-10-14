@@ -10169,21 +10169,14 @@ function parse_borders(t, styles, themes, opts) {
 				var icv = XLSIcv[color.index];
 				if(color.index == 81) icv = XLSIcv[1];
 				if(!icv) icv = XLSIcv[1]; //throw new Error(x); // note: 206 is valid
-				color.rgb = icv[0].toString(16) + icv[1].toString(16) + icv[2].toString(16);
+				color.rgb = [icv[0], icv[1], icv[2]].map(function(c) { return ('0' + c.toString(16)).slice(-2); }).join('').toUpperCase();
 			} else if(y.theme) {
 				color = {}
 				color.theme = parseInt(y.theme, 10);
 				if(y.tint) color.tint = parseFloat(y.tint);
-				if(y.theme && themes.themeElements && themes.themeElements.clrScheme) {
-					color.rgb = rgb_tint(themes.themeElements.clrScheme[color.theme].rgb, color.tint || 0);
-				}
+				/* Keep the theme reference and tint for the style writer. */
 			}
-			if(color.index && color.rgb && !color.theme){
-				if(color.index == 64) color = {rgb:'000'}
-				else color = {rgb:color.rgb}
-			}
-			else if(!color.index && color.rgb && color.theme) color = {rgb:color.rgb};
-			else color = {index:color.index};
+			if(color.index != null) color = {rgb:color.rgb};
 			break;
 			case '<color/>': case '</color>': break;
 
@@ -14536,28 +14529,10 @@ function safe_format(p, fmtid, fillid, opts, themes, styles, fontid, borderid,cf
 		else p.w = SSF_format(fmtid,p.v,_ssfopts);
 	} catch(e) { if(opts.WTF) throw e; }
 	if(!opts.cellStyles) return;
-	// if(fillid != null) try {
-	// 	// p.s = {...styles.Fills[fillid]};
-	// 	const pss = {...styles.Fills[fillid]}
-	// 	if (pss.fgColor && pss.fgColor.theme && !pss.fgColor.rgb) {
-	// 		p.s.fgColor.rgb = rgb_tint(themes.themeElements.clrScheme[pss.fgColor.theme].rgb, pss.fgColor.tint || 0);
-	// 		if(opts.WTF) p.s.fgColor.raw_rgb = themes.themeElements.clrScheme[pss.fgColor.theme].rgb;
-	// 	}
-	// 	if (pss.bgColor && (pss.bgColor.theme || pss.bgColor.theme == 0)) {
-	// 		p.s.Fills[fillid].bgColor.rgb = rgb_tint(themes.themeElements.clrScheme[pss.bgColor.theme].rgb, pss.bgColor.tint || 0);
-	// 		if(opts.WTF) p.s.bgColor.raw_rgb = themes.themeElements.clrScheme[pss.bgColor.theme].rgb;
-	// 	}
-	// 	if(pss.patternType){
-	// 		if(pss.fgColor.rgb){
-	// 			const bg = { rgb: pss.fgColor.rgb };
-	// 			p.s.fill = {fgColor: bg, bgColor: bg ,
-	// 				patternType: pss.patternType == 'solid' ? 'solid' : 'none',
-	// 			}
-	// 		}else {
-	// 			p.s.fill = {patternType: pss.patternType == 'solid' ? 'solid' : 'none',}
-	// 		}
-	// 	}
-	// } catch(e) { if(opts.WTF && styles.Fills) throw e; }
+	/* Map the parsed fill to the nested shape accepted by xlsx-js-style. */
+	if(fillid != null && styles.Fills && styles.Fills[fillid]) {
+		p.s = {...p.s, fill: {...styles.Fills[fillid]}};
+	}
 	if(fontid != null){
 		p.s = {...p.s,...styles.Fonts[fontid],}
         if (p.s.sz) p.s.font = { ...p.s.font, sz: p.s.sz };
