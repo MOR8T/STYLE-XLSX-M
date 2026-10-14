@@ -153,8 +153,3 @@ Changes in this fork (by Shukurov Shahrom):
 
 This project is not affiliated with or endorsed by SheetJS LLC.
 Licensed under the Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
-
-## Changelog
-
-- **0.1.29**: README rewritten; added NOTICE and attribution; package metadata updated; security note added.
-- **0.1.28 and earlier**: `getCellStyles` option for `sheet_to_json`, page setup read/write, style reading on `readFile`.
