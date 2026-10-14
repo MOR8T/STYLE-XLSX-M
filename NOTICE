@@ -1,5 +1,5 @@
 style-xlsx-m
-Copyright 2022-present Shukurov Shahrom
+Copyright 2022-present Shahrom Shukurov
 
 This product is a derivative work and includes software developed by others:
 
@@ -8,16 +8,16 @@ This product is a derivative work and includes software developed by others:
    https://github.com/SheetJS/sheetjs
    Licensed under the Apache License, Version 2.0.
 
-2. xlsx-js-style
+2. xlsx-js-style 1.2.0
    https://github.com/gitbrent/xlsx-js-style
    A fork of SheetJS Community Edition that adds cell styling on write.
    Licensed under the Apache License, Version 2.0.
    Its compiled output is bundled in ./xlsx-js-style/ and is used by this
    package for XLSX.write / XLSX.writeFile.
 
-Changes made in style-xlsx-m (by Shukurov Shahrom):
-- XLSX.read / XLSX.readFile with { cellStyles: true } keep cell styles
-  (xlsx format only), so a file can be edited and saved without losing them.
+Changes made in style-xlsx-m (by Shahrom Shukurov):
+- XLSX.read / XLSX.readFile with { cellStyles: true } expose selected cell styles
+  (xlsx format only), with round-trip limitations documented in README.md.
 - XLSX.utils.sheet_to_json accepts { getCellStyles: true } and returns
   { out, styles }.
 - Worksheet page setup (paperSize, scale, fitToWidth, orientation) is read
@@ -25,9 +25,21 @@ Changes made in style-xlsx-m (by Shukurov Shahrom):
 - XLSX.write / writeFile / writeFileSync / writeXLSX / writeFileXLSX are
   delegated to the bundled xlsx-js-style build.
 
-Modified source files carry a "Modified by Shukurov Shahrom" notice. The
+Modified source files carry a "Modified by Shahrom Shukurov" notice. The
 original copyright headers have been kept.
 
 This project is not affiliated with or endorsed by SheetJS LLC.
 "SheetJS" is a trademark of its owner and is used here only to describe the
 origin of the code.
+
+Neither upstream npm tarball (xlsx 0.18.5, xlsx-js-style 1.2.0) ships a NOTICE
+file. Their Apache 2.0 LICENSE texts and distributed copyright headers remain
+intact. Bundled codepage and adler-32 notices, and the vendored commander
+license, are also retained in third-party-licenses/. External npm dependencies
+retain their own license files when installed.
+
+Additional locally modified sources: xlsx.mjs, types/index.d.ts,
+dist/xlsx.core.min.js, dist/xlsx.mini.min.js, dist/xlsx.extendscript.js,
+xlsx-js-style/dist/xlsx.min.js, xlsx-js-style/dist/xlsx.bundle.js,
+xlsx-js-style/dist/shim.min.js, xlsx-js-style/types/index.d.ts. These include
+legacy source builds that are not shipped in the release tarball.

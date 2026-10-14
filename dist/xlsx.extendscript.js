@@ -1,4 +1,5 @@
 /*! xlsx.js (C) 2013-present SheetJS -- http://sheetjs.com */
+/* Modified by Shahrom Shukurov: local edits to the distributed build; retained for compatibility in the source repository. See NOTICE. */
 /*! shim.js (C) 2013-present SheetJS -- http://sheetjs.com */
 /* ES3/5 Compatibility shims and other utilities for older browsers. */
 const XLSXJSStyle = require('../xlsx-js-style/dist/xlsx.min')

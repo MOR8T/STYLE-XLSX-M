@@ -1,4 +1,5 @@
 /* index.d.ts (C) 2015-present SheetJS and contributors */
+/* Modified by Shahrom Shukurov: getCellStyles option and worksheet naming declaration in the inherited definitions. See NOTICE. */
 // TypeScript Version: 2.2
 // import * as CFB from "cfb";
 // import * as SSF from "ssf";
