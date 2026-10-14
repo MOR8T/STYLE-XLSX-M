@@ -2,6 +2,8 @@
 
 Read and write `.xlsx` files with selected cell styles in Node.js or bundled browser code, and set page setup for printing.
 
+![style-xlsx-m: read a styled Excel template, edit its data, and save it with supported formatting kept](docs/images/style-xlsx-m-cover.png)
+
 Based on [SheetJS Community Edition](https://github.com/SheetJS/sheetjs) (`xlsx` 0.18.5) and [xlsx-js-style](https://github.com/gitbrent/xlsx-js-style).
 
 > **Security note:** this package is built on SheetJS 0.18.5, which has known vulnerabilities fixed upstream in later versions (prototype pollution, CVE-2023-30533, and ReDoS, CVE-2024-22363). **Do not use it to parse untrusted files.** `npm audit` will not flag this, because the SheetJS code is bundled into the package rather than installed as a dependency.
@@ -51,6 +53,10 @@ For everything else (`utils`, `read` options, other formats) see the [SheetJS do
 ## Reading a file with styles
 
 Pass `{ cellStyles: true }` to `readFile` (or `read`). Styled cells expose an `s` object for the writer. The independent openpyxl fixture confirms RGB solid fills, a theme-4 fill with tint, RGB/theme borders, font name/size/colour, bold/italic/single underline, and alignment. Number/date formats, merges, column widths, row heights, and A4 landscape page setup with scale 91 also survive that fixture. This is a partial round trip; see the limitations below.
+
+![Synthetic sales report before and after editing: Product A units change from 100 to 120, revenue from 1,250.00 to 1,500.00, and total revenue from 6,100.00 to 6,350.00, with the same cell formatting](docs/images/template-before-after.png)
+
+The images are real LibreOffice renders of `.xlsx` files created with a locally packed build of this package. Blue outlines mark the three changed values. An independent openpyxl check confirmed that fonts, fills, borders and number formats stayed unchanged in this example.
 
 ```js
 const XLSX = require('style-xlsx-m');
