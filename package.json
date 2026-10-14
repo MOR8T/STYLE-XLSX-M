@@ -1,6 +1,6 @@
 {
 	"name": "style-xlsx-m",
-	"version": "0.1.29",
+	"version": "0.1.30",
 	"author": "Shukurov Shahrom <hp.sh.shahrom@gmail.com> (https://github.com/MOR8T)",
 	"description": "Fork of SheetJS (xlsx 0.18.5) and xlsx-js-style: read .xlsx files with cell styles, write styled cells, and set page setup for printing.",
 	"keywords": [
