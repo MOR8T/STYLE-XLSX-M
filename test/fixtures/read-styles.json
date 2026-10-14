@@ -1,0 +1,172 @@
+{
+  "A1": {
+    "fill": {
+      "patternType": "solid",
+      "fgColor": {
+        "rgb": "12AB34"
+      }
+    },
+    "name": "Calibri",
+    "bold": true,
+    "italic": true,
+    "color": {
+      "rgb": "AB1234"
+    },
+    "sz": 14,
+    "underline": 1,
+    "font": {
+      "sz": 14,
+      "color": {
+        "rgb": "AB1234"
+      },
+      "underline": true,
+      "bold": true,
+      "italic": true,
+      "name": "Calibri"
+    },
+    "border": {
+      "left": {
+        "style": "thin",
+        "color": {
+          "rgb": "123456"
+        }
+      },
+      "right": {
+        "style": "thick",
+        "color": {
+          "rgb": "654321"
+        }
+      },
+      "top": {
+        "style": "dashed",
+        "color": {
+          "theme": 4,
+          "tint": 0.2
+        }
+      },
+      "bottom": {
+        "style": "double",
+        "color": {
+          "rgb": "FF0000"
+        }
+      }
+    },
+    "alignment": {
+      "vertical": "top",
+      "horizontal": "center",
+      "textRotation": "30",
+      "wrapText": true
+    }
+  },
+  "B1": {
+    "fill": {
+      "patternType": "solid",
+      "fgColor": {
+        "theme": 4,
+        "tint": 0.4
+      }
+    },
+    "name": "Calibri",
+    "family": 2,
+    "color": {
+      "theme": 1,
+      "rgb": "000000"
+    },
+    "sz": 11,
+    "scheme": "minor",
+    "font": {
+      "sz": 11,
+      "color": {
+        "theme": 1,
+        "rgb": "000000"
+      },
+      "name": "Calibri"
+    },
+    "border": {}
+  },
+  "C1": {
+    "fill": {
+      "patternType": "solid",
+      "fgColor": {
+        "theme": 0
+      }
+    },
+    "name": "Calibri",
+    "family": 2,
+    "color": {
+      "theme": 1,
+      "rgb": "000000"
+    },
+    "sz": 11,
+    "scheme": "minor",
+    "font": {
+      "sz": 11,
+      "color": {
+        "theme": 1,
+        "rgb": "000000"
+      },
+      "name": "Calibri"
+    },
+    "border": {}
+  },
+  "A2": {
+    "fill": {},
+    "name": "Calibri",
+    "family": 2,
+    "color": {
+      "theme": 1,
+      "rgb": "000000"
+    },
+    "sz": 11,
+    "scheme": "minor",
+    "font": {
+      "sz": 11,
+      "color": {
+        "theme": 1,
+        "rgb": "000000"
+      },
+      "name": "Calibri"
+    },
+    "border": {}
+  },
+  "B2": {
+    "fill": {},
+    "name": "Calibri",
+    "family": 2,
+    "color": {
+      "theme": 1,
+      "rgb": "000000"
+    },
+    "sz": 11,
+    "scheme": "minor",
+    "font": {
+      "sz": 11,
+      "color": {
+        "theme": 1,
+        "rgb": "000000"
+      },
+      "name": "Calibri"
+    },
+    "border": {}
+  },
+  "A4": {
+    "fill": {},
+    "name": "Calibri",
+    "family": 2,
+    "color": {
+      "theme": 1,
+      "rgb": "000000"
+    },
+    "sz": 11,
+    "scheme": "minor",
+    "font": {
+      "sz": 11,
+      "color": {
+        "theme": 1,
+        "rgb": "000000"
+      },
+      "name": "Calibri"
+    },
+    "border": {}
+  }
+}

@@ -41,5 +41,14 @@ if (!process.env.BASELINE) {
   assert.strictEqual(memory.A1.s.border.top.color.tint, 0.2);
   assert.deepStrictEqual(memory.A1.s.fill, { patternType: 'solid', fgColor: { rgb: '12AB34' } });
   assert.strictEqual(memory.A1.s.border.left.color.rgb, '123456');
+  const expected = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', 'read-styles.json'), 'utf8'));
+  for (const cell of Object.keys(expected)) assert.deepStrictEqual(memory[cell].s, expected[cell], `${cell}: in-memory style changed`);
+  const withFormats = XLSX.readFile(fixture, {cellStyles: true, cellNF: true}).Sheets.Template;
+  assert.strictEqual(withFormats.A2.z, '#,##0.00');
+  assert.strictEqual(withFormats.B2.z, 'yyyy-mm-dd');
+  assert.strictEqual(typeof memory['!pageSetup'], 'string');
+  assert.deepStrictEqual(XLSX.utils.sheet_to_json({ '!ref': 'A1:A2', A1: {t: 's', v: 'Product'}, A2: {t: 's', v: 'Product A'} }, {}), [{Product: 'Product A'}]);
+  assert.throws(() => XLSX.utils.sheet_to_json(ws), /getCellStyles/);
+  assert.deepStrictEqual(XLSX.utils.sheet_to_json({}, { getCellStyles: true }), []);
 }
 console.log('Round-trip output and in-memory snapshot:', directory);

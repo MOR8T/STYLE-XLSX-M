@@ -104,7 +104,7 @@ def check_examples(directory):
     assert not any((c.font.bold, c.font.italic, c.font.strike, c.font.underline))
     assert c.fill.patternType == 'solid' and color(c.fill.fgColor)['value'] == 'FF0000'
     ws = openpyxl.load_workbook(d / 'page-setup.xlsx').active
-    assert ws.page_setup.paperSize == '9'
+    assert str(ws.page_setup.paperSize) == '9'
     assert ws.page_setup.scale == 91
     assert ws.page_setup.fitToWidth == 0
     assert ws.page_setup.orientation == 'landscape'
