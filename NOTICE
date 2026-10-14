@@ -1,0 +1,33 @@
+style-xlsx-m
+Copyright 2022-present Shukurov Shahrom
+
+This product is a derivative work and includes software developed by others:
+
+1. SheetJS Community Edition (xlsx) 0.18.5
+   Copyright (C) 2012-present SheetJS LLC
+   https://github.com/SheetJS/sheetjs
+   Licensed under the Apache License, Version 2.0.
+
+2. xlsx-js-style
+   https://github.com/gitbrent/xlsx-js-style
+   A fork of SheetJS Community Edition that adds cell styling on write.
+   Licensed under the Apache License, Version 2.0.
+   Its compiled output is bundled in ./xlsx-js-style/ and is used by this
+   package for XLSX.write / XLSX.writeFile.
+
+Changes made in style-xlsx-m (by Shukurov Shahrom):
+- XLSX.read / XLSX.readFile with { cellStyles: true } keep cell styles
+  (xlsx format only), so a file can be edited and saved without losing them.
+- XLSX.utils.sheet_to_json accepts { getCellStyles: true } and returns
+  { out, styles }.
+- Worksheet page setup (paperSize, scale, fitToWidth, orientation) is read
+  from and written to .xlsx files via ws['!pageSetup'].
+- XLSX.write / writeFile / writeFileSync / writeXLSX / writeFileXLSX are
+  delegated to the bundled xlsx-js-style build.
+
+Modified source files carry a "Modified by Shukurov Shahrom" notice. The
+original copyright headers have been kept.
+
+This project is not affiliated with or endorsed by SheetJS LLC.
+"SheetJS" is a trademark of its owner and is used here only to describe the
+origin of the code.

@@ -1,8 +1,8 @@
 {
 	"name": "style-xlsx-m",
-	"version": "0.1.28",
-	"author": "mor8t (Shukurov Shahrom)",
-	"description": "style-xlsx-m is a custom xlsx and xlsx-js-style versions library",
+	"version": "0.1.29",
+	"author": "Shukurov Shahrom <hp.sh.shahrom@gmail.com> (https://github.com/MOR8T)",
+	"description": "Fork of SheetJS (xlsx 0.18.5) and xlsx-js-style: read .xlsx files with cell styles, write styled cells, and set page setup for printing.",
 	"keywords": [
 		"excel",
 		"xls",
@@ -20,7 +20,11 @@
 		"print",
 		"format",
 		"workbook",
-		"worksheet"
+		"worksheet",
+		"styles",
+		"export",
+		"sheetjs",
+		"xlsx-js-style"
 	],
 	"bin": {
 		"xlsx": "./bin/xlsx.njs"
@@ -68,7 +72,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/MOR8T/STYLE-XSLX-M"
+		"url": "git+https://github.com/MOR8T/STYLE-XSLX-M.git"
 	},
 	"scripts": {
 		"pretest": "npm run lint",
@@ -95,9 +99,9 @@
 			"holes"
 		]
 	},
-	"homepage": "https://github.com/MOR8T/STYLE-XSLX-M",
+	"homepage": "https://github.com/MOR8T/STYLE-XSLX-M#readme",
 	"bugs": {
-		"url": "https://github.com/MOR8T/STYLE-XSLX-M"
+		"url": "https://github.com/MOR8T/STYLE-XSLX-M/issues"
 	},
 	"license": "Apache-2.0",
 	"engines": {

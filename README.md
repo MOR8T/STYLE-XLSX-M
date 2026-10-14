@@ -1,275 +1,160 @@
 # style-xlsx-m
-<!-- # Now i test library pleas wait to evening (finished in 8/30/2022 10:00 pm) -->
-## ℹ️ About
 
-Style-xlsx-m is a custom [XLSX](https://www.npmjs.com/package/xlsx) (SheetJs) version library with styling from [xlsx-js-style](https://www.npmjs.com/package/xlsx-js-style)
+Read and write `.xlsx` files in Node.js with cell styles kept, and set page setup for printing.
 
+Based on [SheetJS Community Edition](https://github.com/SheetJS/sheetjs) (`xlsx` 0.18.5) and [xlsx-js-style](https://github.com/gitbrent/xlsx-js-style).
 
-## 🔌 Installation
+> **Security note:** this package is built on SheetJS 0.18.5, which has known vulnerabilities fixed upstream in later versions (prototype pollution, CVE-2023-30533, and ReDoS, CVE-2024-22363). **Do not use it to parse untrusted files.** `npm audit` will not flag this, because the SheetJS code is bundled into the package rather than installed as a dependency.
 
-Install [npm](https://www.npmjs.org/package/style-xlsx-m):
+## Why this fork
+
+| | SheetJS (npm `xlsx`) | xlsx-js-style | style-xlsx-m |
+| :-- | :-- | :-- | :-- |
+| Write cell styles | no | yes | yes |
+| Read cell styles from an existing `.xlsx` | no | no | yes (`cellStyles: true`) |
+| `sheet_to_json` returns styles | no | no | yes (`getCellStyles: true`) |
+| Page setup (`!pageSetup`) | no | no | yes |
+
+The use case is editing an existing styled Excel template: read it, change the data, and save it without losing the formatting.
+
+## Installation
 
 ```sh
 npm install style-xlsx-m
 ```
 
-Install [yarn](https://www.npmjs.org/package/style-xlsx-m):
-
 ```sh
 yarn add style-xlsx-m
 ```
 
-Install browser:
-
-```html
-<script src="dist/xlsx.js"></script>
-```
-
-## 🗒 Core API
-
--   Refer to the [SheetJS](https://sheetjs.com/) documentation for core API reference
--   Current version of sheetjs used: **0.18.5**
--   Over time, will be added new and customized features.
-
-
-## 🗒 What I added?
-
-### 1. read or readFile
--- When you use read (second property put {type:'file'}) or readFile your file get cells style.
+## Quick start
 
 ```js
-// STEP 1 
-// './excample.xlsx' - is a path to your excel file.
-// Second property is a option { cellStyle: true } for get cells style (but now can't get in xls format).
-const workbook = XLSX.readFile('./example.xlsx',{ cellStyles: true });
+const XLSX = require('style-xlsx-m');
 
-// STEP 2 Create data rows worksheet 
-let worksheet = [
-  "!col":[ { wpx: 10 }, { wpx: 15 }, { wpx:30 } ],
-  "!row":[ { hpx: 10 }, { hpx: 15 }, { hpx:30 } ],
-  { v: "line\nbreak", t: "s" },
-  { v: "Courier: 24", t: "s" },
-  { v: 45, t: "n" },
-  { v: 2023, t: "n" },
-];
-
-// STEP 3 Get workbook data with style and set workbook.Sheets.sheetname to worksheet
-XLSX.utils.book_append_sheet(workbook, worksheet, false, false, sheetname);
-
-// STEP 4 Save your file with style
-XLSX.writeFile(wb, "style-xlsx-m-example.xlsm");
-```
- This example shows how you can change the contents of a file without removing its old style.
- (But you can't get style in xls format becouse this format don't use xml)
-
-
-### 2. PageSetup
-
-```js
- const worksheet = [...]
- 
- // default null
- worksheet['!pageSetup'] = { 
-   paperSize: "9", // "9" for format A4
-   scale: "91", // 1 - 100%
-   fitToWidth: "0", // "0" || "1"
-   orientation: "landscape" // "landscape" || "portrait"
- }
-```
- it can be used to print in desired format
-
- <!-- // #2 default null
- ws['!colBreaks'] = { 
-   colBreaks: {
-      count: "22", 
-      manualBreakCount: "22"
-   }
-   brk: [
-      {
-         id: "12", 
-         min: "1", 
-         max: "37", 
-         man: "1"
-      },
-      ...
-   ]
- }
-
- // #3 default null
- ws['!headerFooter'] = {
-   alignWithMargins: "0"
- } -->
-
-## 🗒 Style API
--- Method to export file in excel with style get from [xlsx-js-style](https://www.npmjs.com/package/xlsx-js-style) (only function writeFile)
-
-
-### Cell Style JSON structure
-
--   Cell styles are specified by a style object that roughly parallels the OpenXML structure.
--   Style properties currently supported are: `alignment`, `border`, `fill`, `font`.
-
-
-```js
-
- const A1 = { v: "line\nbreak", t: "s", s:{} } // key s is a style key for your cell
-
- const BORDER_STYLE = 'think'
-
- const COLOR_STYLE = {
-    rgb: 'FF0000'
- }
-
- // Aligment
- A1.s = {
-       aligment: {
-       vertical: 'bottom', // "top" or "center" or "bottom"
-       horizontal : 'left', // "left" or "center" or "right"
-       wrapText: false, // true or false
-       textRotation: 0 // 0 to 180, or 255 // 180 is rotated down 180 degrees, 255 is special, aligned vertically
-    }
- }
-
- const border = { 
-    style: BORDER_STYLE, 
-    color: COLOR_STYLE,
- }
-
- // Border
- A1.s = {
-    border: {
-        top: border, 
-        bottom: border,
-        left: border,
-        right: border,
-        diagonal: { 
-            style: BORDER_STYLE, 
-            color: COLOR_STYLE, 
-            diagonalUp: false, // true or false
-            diagonalDown: true/false // true or false
-        }
-    }
- }
-
- // Font
- A1.s = {
-    font: {
-        color: COLOR_STYLE,
-        name: 'Calibri', // font name
-        sz: '11', // font size (points)
-        vertAlign: '', //  	"superscript" or "subscript"
-        bold: false, // true or false
-        italic: true, // true or false
-        strike: false, // true or false
-        underline: false, // true or false
-    }
- }
-
- // Fill 
- A1.s = {
-    fill: {
-        patternType: 'none', // 'none' or 'solid'
-        fgColor: COLOR_STYLE,
-    }
- }
-
-```
-
-
-### Cell Style Example
-
-```js
-// STEP 1: Create a new workbook
 const wb = XLSX.utils.book_new();
 
-// STEP 2: Create data rows and styles
-let row = [
-  { v: "line\nbreak", t: "s", s: { alignment: { wrapText: true } } },
-  { v: "Courier: 24", t: "s", s: { font: { name: "Courier", sz: 24 } } },
-  { v: "fill: color", t: "s", s: { fill: { fgColor: { rgb: "E9E9E9" } } } },
-  { v: "bold & color", t: "s", s: { font: { bold: true, color: { rgb: "FF0000" } } } },
+const row = [
+  { v: 'line\nbreak', t: 's', s: { alignment: { wrapText: true } } },
+  { v: 'Courier: 24', t: 's', s: { font: { name: 'Courier', sz: 24 } } },
+  { v: 'fill: color', t: 's', s: { fill: { patternType: 'solid', fgColor: { rgb: 'E9E9E9' } } } },
+  { v: 'bold & color', t: 's', s: { font: { bold: true, color: { rgb: 'FF0000' } } } },
 ];
 
-// STEP 3: Create worksheet with rows; Add worksheet to workbook
 const ws = XLSX.utils.aoa_to_sheet([row]);
-XLSX.utils.book_append_sheet(wb, ws, "readme demo");
-
-// STEP 4: Write Excel file to browser
-XLSX.writeFile(wb, "xlsx-js-style-demo.xlsx");
+XLSX.utils.book_append_sheet(wb, ws, 'demo');
+XLSX.writeFile(wb, 'demo.xlsx');
 ```
-<!-- | Style Prop  | Sub Prop       | Default     | Description/Values                                                                                |
-| :---------- | :------------- | :---------- | ------------------------------------------------------------------------------------------------- |
-| `alignment` | `vertical`     | `bottom`    | `"top"` or `"center"` or `"bottom"`                                                               |
-|             | `horizontal`   | `left`      | `"left"` or `"center"` or `"right"`                                                               |
-|             | `wrapText`     | `false`     | `true` or `false`                                                                                 |
-|             | `textRotation` | `0`         | `0` to `180`, or `255` // `180` is rotated down 180 degrees, `255` is special, aligned vertically |
-| `border`    | `top`          |             | `{ style: BORDER_STYLE, color: COLOR_STYLE }`                                                     |
-|             | `bottom`       |             | `{ style: BORDER_STYLE, color: COLOR_STYLE }`                                                     |
-|             | `left`         |             | `{ style: BORDER_STYLE, color: COLOR_STYLE }`                                                     |
-|             | `right`        |             | `{ style: BORDER_STYLE, color: COLOR_STYLE }`                                                     |
-|             | `diagonal`     |             | `{ style: BORDER_STYLE, color: COLOR_STYLE, diagonalUp: true/false, diagonalDown: true/false }`   |
-| `fill`      | `patternType`  | `"none"`    | `"solid"` or `"none"`                                                                             |
-|             | `fgColor`      |             | foreground color: see `COLOR_STYLE`                                                               |
-|             | `bgColor`      |             | background color: see `COLOR_STYLE`                                                               |
-| `font`      | `bold`         | `false`     | font bold `true` or `false`                                                                       |
-|             | `color`        |             | font color `COLOR_STYLE`                                                                          |
-|             | `italic`       | `false`     | font italic `true` or `false`                                                                     |
-|             | `name`         | `"Calibri"` | font name                                                                                         |
-|             | `strike`       | `false`     | font strikethrough `true` or `false`                                                              |
-|             | `sz`           | `"11"`      | font size (points)                                                                                |
-|             | `underline`    | `false`     | font underline `true` or `false`                                                                  |
-|             | `vertAlign`    |             | `"superscript"` or `"subscript"`                                                                  |
-| `numFmt`    |                | `0`         | Ex: `"0"` // integer index to built in formats, see StyleBuilder.SSF property                     |
-|             |                |             | Ex: `"0.00%"` // string matching a built-in format, see StyleBuilder.SSF                          |
-|             |                |             | Ex: `"0.0%"` // string specifying a custom format                                                 |
-|             |                |             | Ex: `"0.00%;\\(0.00%\\);\\-;@"` // string specifying a custom format, escaping special characters |
-|             |                |             | Ex: `"m/dd/yy"` // string a date format using Excel's format notation                             | -->
 
+For everything else (`utils`, `read` options, other formats) see the [SheetJS documentation](https://docs.sheetjs.com/). It applies, except where this README says otherwise.
 
-### `COLOR_STYLE` {object} Properties
+## Reading a file with styles
 
-Colors for `border`, `fill`, `font` are specified as an name/value object - use one of the following:
-`rgb key doesn't mean it's rgb format it's a hek format`.
+Pass `{ cellStyles: true }` to `readFile` (or `read`). Each cell then has an `s` property. Edit values, save with `writeFile`, and the styles are written back.
 
 ```js
- // JSON structure
- const COLOR_STYLE = { // hex RGB value 
-    rgb: 'FFCC00'
- }
- const COLOR_STYLE = { // theme color index
-    theme: 4 // (0-n) // Theme color index 4 ("Blue, Accent 1")
- }
- const COLOR_STYLE = { // tint by percent
-    theme: 1, 
-    tint: 0.4 // ("Blue, Accent 1, Lighter 40%")
- } 
+const XLSX = require('style-xlsx-m');
+
+const wb = XLSX.readFile('./demo.xlsx', { cellStyles: true });
+const ws = wb.Sheets['demo'];
+
+ws.A1.v = 'changed'; // value changes, style stays
+XLSX.writeFile(wb, 'demo-edited.xlsx');
 ```
-<!-- | Color Prop | Description       | Example                                                         |
-| :--------- | ----------------- | --------------------------------------------------------------- |
-| `rgb`      | hex RGB value     | `{rgb: "FFCC00"}`                                               |
-| `theme`    | theme color index | `{theme: 4}` // (0-n) // Theme color index 4 ("Blue, Accent 1") |
-| `tint`     | tint by percent   | `{theme: 1, tint: 0.4}` // ("Blue, Accent 1, Lighter 40%")      | -->
 
+Styles are also available per row from `sheet_to_json`:
 
-### `BORDER_STYLE` {string} Properties
+```js
+const { out, styles } = XLSX.utils.sheet_to_json(ws, { header: 1, getCellStyles: true });
+// out[r][c]    -> cell value
+// styles[r][c] -> style object of that cell ({} if the cell has no style)
+```
 
-Border style property is one of the following values:
+Note: `styles[r]` lists the cells that `sheet_to_json` visits in that row, in order. It can be shorter than the sheet's width.
 
-`dashDotDot`, `dashDot`, `dashed`, `dotted`, `hair`, `mediumDashDotDot`, `mediumDashDot`, `mediumDashed`, `medium`, `slantDashDot`, `thick`, `thin`
+Reading styles works for `.xlsx` only, not `.xls`.
 
+## Cell styles reference
 
-## 🗒 TODO
-- optimize the project
-- add new features for tasks and libraries (for example: spreadsheet)
-- If you have any ideas and/or suggestions write in my email (hp.sh.shahrom@gmail.com) or [github](https://github.com/MOR8T)
+A cell is `{ v: value, t: type, s: style }`. The supported style properties are `alignment`, `border`, `fill` and `font`.
 
-## 🙏 Thanks
+```js
+const COLOR = { rgb: 'FF0000' };          // hex value, no leading "#"
+const COLOR_THEME = { theme: 4 };         // theme colour index
+const COLOR_TINT = { theme: 1, tint: 0.4 };
 
-This project is a fork of [SheetJS/sheetjs](https://github.com/sheetjs/sheetjs) combined with code and documentation from
-[xlsx-js-style](https://www.npmjs.com/package/xlsx-js-style) (by [brentely](https://www.npmjs.com/~brentely)).
+const border = { style: 'thick', color: COLOR };
 
+const style = {
+  alignment: {
+    vertical: 'center',      // 'top' | 'center' | 'bottom'
+    horizontal: 'center',    // 'left' | 'center' | 'right'
+    wrapText: true,
+    textRotation: 0,         // 0 to 180, or 255 (vertical text)
+  },
+  border: {
+    top: border,
+    bottom: border,
+    left: border,
+    right: border,
+    diagonal: { style: 'thin', color: COLOR, diagonalUp: false, diagonalDown: true },
+  },
+  font: {
+    name: 'Calibri',
+    sz: 11,                  // points
+    color: COLOR,
+    bold: false,
+    italic: false,
+    strike: false,
+    underline: false,
+    vertAlign: 'superscript', // 'superscript' | 'subscript'
+  },
+  fill: {
+    patternType: 'solid',    // 'solid' | 'none'
+    fgColor: COLOR,          // background colour of a solid fill
+  },
+};
+```
 
-## 🔖 License
+Border `style` is one of: `dashDotDot`, `dashDot`, `dashed`, `dotted`, `hair`, `mediumDashDotDot`, `mediumDashDot`, `mediumDashed`, `medium`, `slantDashDot`, `thick`, `thin`.
 
-Please consult the attached [LICENSE](https://github.com/MOR8T/STYLE-XSLX-M/blob/main/LICENSE) file for details. All rights not explicitly
-granted by the Apache 2.0 License are reserved by the Original Author.
+## Page setup for printing
+
+Set `!pageSetup` on a worksheet before writing:
+
+```js
+ws['!pageSetup'] = {
+  paperSize: '9',          // '9' = A4
+  scale: '91',             // percent
+  fitToWidth: '0',         // '0' | '1'
+  orientation: 'landscape' // 'landscape' | 'portrait'
+};
+```
+
+When a file is **read**, `ws['!pageSetup']` is the raw `<pageSetup .../>` XML tag as a string, not an object. If you edit and re-save a file, assign an object as shown above to change the settings.
+
+## Limitations / Known issues
+
+- Based on SheetJS 0.18.5 (see the security note above). Do not parse untrusted files.
+- Cell styles are read from `.xlsx` only, not `.xls`.
+- Reading is not a full round trip. In testing, a solid cell fill and border colours written to a file did not come back in the cell's `s` object after `readFile`. Check your own templates and test before relying on this.
+- `!pageSetup` is returned as a raw XML string on read (see above).
+- The TypeScript definitions are inherited from SheetJS with a `getCellStyles` option added. The `s` style property and `!pageSetup` are not fully typed.
+- Only the write functions come from xlsx-js-style: `write`, `writeFile`, `writeFileSync`, `writeXLSX`, `writeFileXLSX`.
+
+## Credits & License
+
+This package is a fork of [SheetJS Community Edition](https://github.com/SheetJS/sheetjs) and includes code from [xlsx-js-style](https://github.com/gitbrent/xlsx-js-style). Both are licensed under the Apache License 2.0.
+
+Changes in this fork (by Shukurov Shahrom):
+- Reading existing `.xlsx` files with cell styles preserved (`cellStyles: true`)
+- `getCellStyles` option for `sheet_to_json`
+- Page setup for printing (paper size, orientation, scale)
+
+This project is not affiliated with or endorsed by SheetJS LLC.
+Licensed under the Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+## Changelog
+
+- **0.1.29**: README rewritten; added NOTICE and attribution; package metadata updated; security note added.
+- **0.1.28 and earlier**: `getCellStyles` option for `sheet_to_json`, page setup read/write, style reading on `readFile`.

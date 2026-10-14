@@ -1,4 +1,5 @@
 /*! xlsx.js (C) 2013-present SheetJS -- http://sheetjs.com */
+/* Modified by Shukurov Shahrom: style reading, sheet_to_json getCellStyles, page setup, write via xlsx-js-style. See NOTICE. */
 /* vim: set ts=2: */
 /*exported XLSX */
 /*global exports, module, require:false, process:false, Buffer:false, ArrayBuffer:false, DataView:false, Deno:false */
