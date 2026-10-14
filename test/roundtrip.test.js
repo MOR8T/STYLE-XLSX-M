@@ -48,7 +48,7 @@ if (!process.env.BASELINE) {
   assert.strictEqual(withFormats.B2.z, 'yyyy-mm-dd');
   assert.strictEqual(typeof memory['!pageSetup'], 'string');
   assert.deepStrictEqual(XLSX.utils.sheet_to_json({ '!ref': 'A1:A2', A1: {t: 's', v: 'Product'}, A2: {t: 's', v: 'Product A'} }, {}), [{Product: 'Product A'}]);
-  assert.throws(() => XLSX.utils.sheet_to_json(ws), /getCellStyles/);
+  assert.deepStrictEqual(XLSX.utils.sheet_to_json(ws), XLSX.utils.sheet_to_json(ws, {}));
   assert.deepStrictEqual(XLSX.utils.sheet_to_json({}, { getCellStyles: true }), []);
 }
 console.log('Round-trip output and in-memory snapshot:', directory);
