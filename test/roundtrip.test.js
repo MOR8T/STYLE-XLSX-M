@@ -31,7 +31,7 @@ if (process.env.RESULTS_FILE) fs.writeFileSync(process.env.RESULTS_FILE, JSON.st
 console.table(rows.map(({property, presentInS, preserved}) => ({property, presentInS, preserved})));
 assert.strictEqual(saved['A1.value'], 'Product A edited');
 if (!process.env.BASELINE) {
-  const limitations = ['C1.fill.fgColor', 'A1.border.bottom.color'];
+  const limitations = ['A1.border.bottom.color'];
   for (const row of rows) assert.strictEqual(row.preserved, !limitations.includes(row.property), `${row.property}: unexpected round-trip result`);
   assert.strictEqual(saved['A1.border.bottom.color'].value, 'FF0000');
   assert.strictEqual(saved['A1.border.bottom.color'].type, 'rgb');

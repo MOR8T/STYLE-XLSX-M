@@ -14427,8 +14427,8 @@ function make_xlsx_lib(a) {
             (r = (function (e, t, r, a) {
               if (
                 (e.c && r["!comments"].push([t, e.c]),
-                (void 0 === e.v && "string" != typeof e.f) ||
-                  ("z" === e.t && !e.f))
+                ((void 0 === e.v && "string" != typeof e.f) ||
+                  ("z" === e.t && !e.f)) && !e.s)
               )
                 return "";
               var n = "",
@@ -14458,6 +14458,8 @@ function make_xlsx_lib(a) {
               var o = $t("v", kt(n)),
                 c = { r: t },
                 l = el(a.cellXfs, e, a);
+              if (("z" === e.t && !e.f) || (null == e.v && "string" != typeof e.f))
+                o = "";
               switch ((0 !== l && (c.s = l), e.t)) {
                 case "n":
                   break;
@@ -26277,7 +26279,15 @@ function make_xlsx_lib(a) {
         });
       return (
         (a.prototype.escapeAttributeValue = function (e) {
-          return '"' + e.replace(/\"/g, "&quot;") + '"';
+          return (
+            '"' +
+            e
+              .replace(/&(?!(?:amp|lt|gt|quot|apos|#[0-9]+|#x[0-9a-fA-F]+);)/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/\"/g, "&quot;") +
+            '"'
+          );
         }),
         (a.prototype.toXml = function (e) {
           // in this function make style tag
@@ -26457,12 +26467,15 @@ function make_xlsx_lib(a) {
         },
         _addFont: function (e) {
           if (!e) return 0;
+          var fontColor;
           var t = vu("font")
             .append(vu("sz").attr("val", e.sz || this.defaultStyle.font.sz))
             .append(
               vu("name").attr("val", e.name || this.defaultStyle.font.name)
             );
           e.bold && t.append(vu("b")),
+            e.family != null && t.append(vu("family").attr("val", e.family)),
+            e.scheme != null && t.append(vu("scheme").attr("val", e.scheme)),
             e.underline && t.append(vu("u")),
             e.italic && t.append(vu("i")),
             e.strike && t.append(vu("strike")),
@@ -26470,12 +26483,12 @@ function make_xlsx_lib(a) {
             e.shadow && t.append(vu("shadow")),
             e.vertAlign && t.append(vu("vertAlign").attr("val", e.vertAlign)),
             e.color &&
-              (e.color.theme
-                ? (t.append(vu("color").attr("theme", e.color.theme)),
-                  e.color.tint &&
-                    t.append(vu("tint").attr("theme", e.color.tint)))
+              (e.color.theme != null
+                ? (fontColor = vu("color").attr("theme", e.color.theme),
+                   e.color.tint != null && fontColor.attr("tint", e.color.tint),
+                   t.append(fontColor))
                 : e.color.rgb &&
-                  t.append(vu("color").attr("rgb", e.color.rgb))),
+                  t.append(vu("color").attr("rgb", e.color.rgb.length === 6 ? "FF" + e.color.rgb : e.color.rgb))),
             this.$fonts.append(t);
           t = this.$fonts.children().length;
           return this.$fonts.attr("count", t), t - 1;
@@ -26499,7 +26512,7 @@ function make_xlsx_lib(a) {
           return this.$numFmts.attr("count", e), r;
         },
         _addFill: function (e) {
-          if (!e) return 0;
+          if (!e || (!e.patternType && !e.fgColor && !e.bgColor)) return 0;
           var t,
             r = vu("patternFill").attr("patternType", e.patternType || "solid");
           e.fgColor &&
@@ -26509,7 +26522,7 @@ function make_xlsx_lib(a) {
                   (e.fgColor.rgb = "FF" + e.fgColor.rgb),
                 t.attr("rgb", e.fgColor.rgb),
                 r.append(t))
-              : e.fgColor.theme &&
+              : e.fgColor.theme != null &&
                 (t.attr("theme", e.fgColor.theme),
                 e.fgColor.tint && t.attr("tint", e.fgColor.tint),
                 r.append(t)),
@@ -26530,7 +26543,7 @@ function make_xlsx_lib(a) {
                 t.color.auto
                   ? e.attr("auto", t.color.auto)
                   : t.color.rgb
-                  ? e.attr("rgb", t.color.rgb)
+                  ? e.attr("rgb", t.color.rgb.length === 6 ? "FF" + t.color.rgb : t.color.rgb)
                   : (t.color.theme || t.color.tint) &&
                     (e.attr("theme", t.color.theme || "1"),
                     e.attr("tint", t.color.tint || "0")),

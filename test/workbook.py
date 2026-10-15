@@ -80,6 +80,11 @@ def inspect(path):
 
 def check_examples(directory):
     d = Path(directory)
+    browser = openpyxl.load_workbook(d / 'Book1-edited.xlsx').active
+    assert browser['B3'].value == 'Edited in React'
+    assert browser['A2'].value is None
+    assert browser['A2'].alignment.horizontal == 'center'
+    assert browser['A1'].font.family == 2 and browser['A1'].font.scheme == 'minor'
     ws = openpyxl.load_workbook(d / 'demo.xlsx').active
     assert ws['A1'].alignment.wrapText is True
     assert ws['B1'].font.name == 'Courier' and ws['B1'].font.sz == 24
